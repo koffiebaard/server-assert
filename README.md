@@ -34,7 +34,7 @@ Examples:
 Aimed process of usage:
 ----------------------
 
-- verify on interval
+verify on interval
 
 	$ apt-get install sassert
 	# create bash script w/
@@ -42,7 +42,7 @@ Aimed process of usage:
 	sassert --ownership /var/www www-data -q --mailonfail bloop@bleep.com
 	# put in crontab
 
-- manual checks
+manual checks
 
 	$ apt-get install sassert
 	$ sassert --ownership /var/www/index.php www-data
