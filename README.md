@@ -2,6 +2,14 @@
 
 Asserts for the actual linux servers.
 
+- Low level framework-ish
+
+- Asserts to check if everything in the system is as it should be
+
+- Easily bundle some asserts in a script and run as a cronjob.
+
+- Can send a mail if anything fails.
+
 
 Examples:
 
@@ -21,22 +29,20 @@ Examples:
 	sassert --verify-crontab-scripts
 
 
-- Easily bundle some asserts in a script and run as a cronjob.
-
-- It can send a mail if anything fails.
 
 
 Aimed process of usage:
+----------------------
 
-verify on interval
+- verify on interval
 
 	$ apt-get install sassert
 	# create bash script w/
-	sassert --exists /var/www -q --mailonfail
-	sassert --ownership /var/www www-data -q --mailonfail
+	sassert --exists /var/www -q --mailonfail bloop@bleep.com
+	sassert --ownership /var/www www-data -q --mailonfail bloop@bleep.com
 	# put in crontab
 
-manual checks
+- manual checks
 
 	$ apt-get install sassert
 	$ sassert --ownership /var/www/index.php www-data
