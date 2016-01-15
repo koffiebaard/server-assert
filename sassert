@@ -28,7 +28,7 @@ if [ ! $cmd ]; then
 fi
 
 source ./filesystem
-#source ./procs
+source ./procs
 #source ./network
 
 
@@ -61,64 +61,15 @@ if [ $cmd ]; then
 		"--exists" )
 			exists $file ;;
 		"--ownership" )
-			if [ -e $file ]; then
-				if [ -f $file ]; then
-					actualOwner=$(ls -la $file | awk '{print $3}')
-				else
-					actualOwner=$(ls -la $file | grep " \.$" | awk '{print $3}')
-				fi
-
-				if [ $owner == $actualOwner ]; then
-					echo -e "\e[90mownership $file by $owner.... \e[92mOK!"
-				else
-					echo -e "\e[90mownership $file by $owner.... \e[91mhell naw. it's $actualOwner, not $owner"	
-				fi
-			else
-				echo -e "\e[90mownership $file .... \e[91mhell naw. Doesn't exist."
-			fi ;;
+			ownership $file $owner ;;
 		"--permissions" )
-			if [ -e $file ]; then
-				if [ -f $file  ] || [ -h $file ]; then
-					actualPermissions=$(ls -la $file | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/) *2^(8-i));if(k)printf("%0o ",k);print}' | awk '{print $1}')
-				else
-					actualPermissions=$(ls -la $file | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/) *2^(8-i));if(k)printf("%0o ",k);print}' | grep " \.$" | awk '{print $1}')
-				fi
-
-				if [ "$permissions" == "$actualPermissions" ]; then
-					echo -e "\e[90mpermissions $file being $permissions.... \e[92mOK!"
-				else
-					echo -e "\e[90mpermissions $file being $permissions.... \e[91mhell naw. it's $actualPermissions, not $permissions"	
-				fi
-			else
-				echo -e "\e[90mpermissions $file .... \e[91mhell naw. Doesn't exist."
-			fi ;;
+			permissions $file $permissions ;;
 		"--symlink" )
-			if [ -e $file ]; then
-				if [ -h $file ]; then
-					actualSymlinkDestination=$(ls -l ~/testsymlink | awk '{print $11}')
-					if [ $symlinkDestination == $actualSymlinkDestination ]; then
-						echo -e "\e[90msymlink $file going to $symlinkDestination.... \e[92mOK!"
-					else
-						echo -e "\e[90msymlink $file going to $symlinkDestination.... \e[91mhell naw. it's $actualSymlinkDestination, not $symlinkDestination"	
-					fi
-				else
-					echo -e "\e[90msymlink $file .... \e[91mhell naw. Not a symlink."
-				fi
-			else
-				echo -e "\e[90msymlink $file .... \e[91mhell naw. Doesn't exist."
-			fi ;;
+			symlink $file $symlinkDestination ;;
 		"--daemon-running" )
-			if [ $(ps -e | egrep \ $daemon$ | wc -l) -gt 0 ]; then
-				 echo -e "\e[90mdaemon-running $daemon .... \e[92mOK!"
-			else
-				echo -e "\e[90mdaemon-running $file .... \e[91mhell naw. Not running"
-			fi ;;
+			daemonRunning $daemon ;;
 		"--process-match" )
-			if [ $(ps aux | egrep $processRegex | wc -l) -gt 0 ]; then
-				 echo -e "\e[90mprocess-match $processRegex .... \e[92mOK!"
-			else
-				echo -e "\e[90mprocess-match $processRegex .... \e[91mhell naw. Not running"
-			fi ;;
+			processMatch $processRegex ;;
     		-- ) shift; break ;;
 		* ) break ;; 
 	esac

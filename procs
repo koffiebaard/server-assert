@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function daemonRunning {
+	daemon=$1
+	
+			if [ $(ps -e | egrep \ $daemon$ | wc -l) -gt 0 ]; then
+				 echo -e "\e[90mdaemon-running $daemon .... \e[92mOK!"
+			else
+				echo -e "\e[90mdaemon-running $daemon .... \e[91mhell naw. Not running"
+			fi
+}
+
+function processMatch {
+	processRegex=$1
+			if [ $(ps aux | egrep $processRegex | wc -l) -gt 0 ]; then
+				 echo -e "\e[90mprocess-match $processRegex .... \e[92mOK!"
+			else
+				echo -e "\e[90mprocess-match $processRegex .... \e[91mhell naw. Not running"
+			fi
+}
