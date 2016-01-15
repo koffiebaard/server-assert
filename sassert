@@ -11,6 +11,7 @@ while true; do
     -h | --help ) cmd="--help"; shift ;;
     -d | --debug ) opt["debug"]=true; shift ;;
     -q | --quiet | --shutup ) opt["quiet"]=true; shift ;;
+    -m | --mailafail ) opt["mailafail"]=$2; shift 2 ;;
     --exists ) cmd=$1; file=$2; shift 2 ;;
     --ownership ) cmd=$1; file=$2; owner=$3; shift 3 ;;
     --permissions ) cmd=$1; file=$2; permissions=$3; shift 3 ;;
@@ -27,6 +28,7 @@ if [ ! $cmd ]; then
 	cmd="--help"
 fi
 
+source ./generic
 source ./filesystem
 source ./procs
 #source ./network
@@ -50,6 +52,7 @@ if [ $cmd ]; then
 				echo "	--permissions [dir/file] [perms]	Verify permissions (in numeric format)"
 				echo "	--ownership [dir/file] [username]	Verify ownership"
 				echo "	--symlink [file] [destination]		Verify the destination of the symlink"
+				echo "	--mailafail [email address]		Send a mail when the assert fails"
 				echo "	-v, --version				Show version"
 				echo ""
 				echo "Flags:"
@@ -76,3 +79,4 @@ if [ $cmd ]; then
 else
 	echo "That's not how it works, dude."
 fi
+

@@ -3,9 +3,9 @@
 function exists {
 	file=$1
 			if [ -e $file ]; then
-				echo -e "\e[90mexists $file .... \e[92mOK!"
+				output "exists $file" OK
 			else
-				echo -e "\e[90mexists $file .... \e[91mhell naw."
+				output "exists $file" FAIL "File doesn't exist"
 			fi
 }
 
@@ -20,12 +20,12 @@ function ownership {
 				fi
 
 				if [ $owner == $actualOwner ]; then
-					echo -e "\e[90mownership $file by $owner.... \e[92mOK!"
+					output "ownership $file by $owner" OK
 				else
-					echo -e "\e[90mownership $file by $owner.... \e[91mhell naw. it's $actualOwner, not $owner"	
+					output "ownership $file by $owner" FAIL "owned by $actualOwner, not by $owner"
 				fi
 			else
-				echo -e "\e[90mownership $file .... \e[91mhell naw. Doesn't exist."
+				output "ownership $file" FAIL "File doesn't exist"
 			fi
 }
 
@@ -41,12 +41,12 @@ function permissions {
 				fi
 
 				if [ "$permissions" == "$actualPermissions" ]; then
-					echo -e "\e[90mpermissions $file being $permissions.... \e[92mOK!"
+					output "permissions $file being $permissions" OK
 				else
-					echo -e "\e[90mpermissions $file being $permissions.... \e[91mhell naw. it's $actualPermissions, not $permissions"	
+					output "permissions $file being $permissions" FAIL "it's $actualPermissions, not $permissions"
 				fi
 			else
-				echo -e "\e[90mpermissions $file .... \e[91mhell naw. Doesn't exist."
+				output "permissions $file being $permissions" FAIL "File doesn't exist"
 			fi
 }
 
@@ -58,15 +58,15 @@ function symlink {
 				if [ -h $file ]; then
 					actualSymlinkDestination=$(ls -l ~/testsymlink | awk '{print $11}')
 					if [ $symlinkDestination == $actualSymlinkDestination ]; then
-						echo -e "\e[90msymlink $file going to $symlinkDestination.... \e[92mOK!"
+						output "Symlink $file -> $symlinkDestination" OK
 					else
-						echo -e "\e[90msymlink $file going to $symlinkDestination.... \e[91mhell naw. it's $actualSymlinkDestination, not $symlinkDestination"	
+						output "Symlink $file -> $symlinkDestination" FAIL "Symlinks to $actualSymlinkDestination, not $symlinkDestination"
 					fi
 				else
-					echo -e "\e[90msymlink $file .... \e[91mhell naw. Not a symlink."
+					output "Symlink $file -> $symlinkDestination" FAIL "It's not a symlink"
 				fi
 			else
-				echo -e "\e[90msymlink $file .... \e[91mhell naw. Doesn't exist."
+				output "Symlink $file -> $symlinkDestination" FAIL "File doesn't exist"
 			fi
 }
 

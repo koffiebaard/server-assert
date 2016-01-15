@@ -4,17 +4,17 @@ function daemonRunning {
 	daemon=$1
 	
 			if [ $(ps -e | egrep \ $daemon$ | wc -l) -gt 0 ]; then
-				 echo -e "\e[90mdaemon-running $daemon .... \e[92mOK!"
+				output "daemon-running $daemon" OK
 			else
-				echo -e "\e[90mdaemon-running $daemon .... \e[91mhell naw. Not running"
+				output "daemon-running $daemon" FAIL "It's not running"
 			fi
 }
 
 function processMatch {
 	processRegex=$1
 			if [ $(ps aux | egrep $processRegex | wc -l) -gt 0 ]; then
-				 echo -e "\e[90mprocess-match $processRegex .... \e[92mOK!"
+				output "process-match $processRegex" OK
 			else
-				echo -e "\e[90mprocess-match $processRegex .... \e[91mhell naw. Not running"
+				output "process-match $processRegex" FAIL "It's not running"
 			fi
 }

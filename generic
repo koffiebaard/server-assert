@@ -1,0 +1,31 @@
+#!/bin/bash
+
+function output {
+        test=$1
+        success=$2
+        description=$3
+
+        if [ "$success" == "OK" ]; then
+                if [ ${opt["quiet"]} ]; then
+                        echo "OK"
+                else
+                        echo -e "\e[90m$test .... \e[92mOK"
+                fi
+        else
+                if [ ${opt["quiet"]} ]; then
+                        echo "Failed"
+                else
+                        echo -e "\e[90m$test .... \e[91mFailed! $description"
+                fi
+		
+		if [[ -n ${opt["mailafail"]} ]]; then
+			mailafail "$test failed! $description"
+		fi
+        fi
+}
+
+function mailafail {
+	description=$1
+	echo ${opt["mailafail"]}
+	echo "Hello good sir, there was a fail. $description" | mail -s "There's a fail." ${opt["mailafail"]}
+}
